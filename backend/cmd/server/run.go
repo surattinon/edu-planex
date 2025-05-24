@@ -30,41 +30,5 @@ func run() {
 	dbDSN := cfg.DB_Dsn
 
 	log.Printf("DB URL is: %s", dbUrl)
-
-	db, err := database.InitDB(dbDSN)
-	if err != nil {
-		log.Error().Msgf("Could not connect to DB: %v", err)
-	}
-	if err := database.MigrateDB(cfg.Migration_Dir, dbUrl); err != nil {
-		log.Error().Msgf("Could not migrate DB: %v", err)
-	}
-
-	// Repos & services
-	userRepo := repository.NewUserRepo(db)
-	authService := service.NewAuthService(userRepo, cfg.JWT_Secret)
-
-	// Handlers
-	authHandler := handler.NewAuthHandler(authService)
-
-	// Gin
-	gin.SetMode(gin.ReleaseMode)
-	router := gin.Default()
-	router.Use(middleware.CORSMiddleware())
-
-	api := router.Group("/api/v1")
-	auth := api.Group("/auth") 
-	{
-		auth.POST("/advisor/signup", authHandler.AdvisorSignup)
-		auth.POST("/login", authHandler.Login)
-	}
-
-	protected := api.Group("/")
-	protected.Use(middleware.JWTMiddleware(cfg.JWT_Secret))
-	{
-		protected.POST("/student/signup", authHandler.StudentSignup)
-	}
-
-	port := cfg.Server_Port
-	log.Info().Msgf("Start server on port: %s", port)
-	router.Run(fmt.Sprintf(":%s", port))
+	log.Printf("DB DSN is: %s", dbDSN)
 }
