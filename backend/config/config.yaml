@@ -1,0 +1,18 @@
+server:
+  port: 8888
+  debug: true
+
+db:
+  dsn: 'host=localhost port=5432 user=postgres password=eduplanex442 dbname=eduplanex sslmode=disable'
+  host: 'localhost'
+  port: 5432
+  user: 'postgres'
+  pass: 'eduplanex442'
+  name: 'eduplanex'
+  sslmode: 'disable'
+
+migrations:
+  dir: 'internal/database/migrations'
+
+jwt:
+  secret: 'REPLACE_WITH_STRONG_RANDOM'
