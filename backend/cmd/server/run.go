@@ -7,8 +7,9 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/surattinon/edu-planex/backend/internal/config"
 	"github.com/surattinon/edu-planex/backend/internal/database"
+	"github.com/surattinon/edu-planex/backend/internal/handler"
 	"github.com/surattinon/edu-planex/backend/internal/logger"
-	"github.com/surattinon/edu-planex/backend/internal/seeds"
+	"github.com/surattinon/edu-planex/backend/internal/service"
 )
 
 func run() {
@@ -30,12 +31,17 @@ func run() {
 		return
 	}
 
-	if err := seeds.Load(db, "./internal/seeds/seeds-json/bsc-it-21.json"); err != nil {
-		log.Logger.Error().Msgf("%v", err)
-	}
+	crsSvc := service.NewCourseService(db)
+	crsHnd := handler.NewCourseHandler(crsSvc)
+	catSvc := service.NewCategoryService(db)
+	catHnd := handler.NewCategoryHandler(catSvc)
+
 	r := gin.Default()
-	// r.GET("/courses", handler.GetCourses)
-	// r.GET("/course/:code", handler.GetCourseByID)
+	r.GET("/courses", crsHnd.GetCourseList)
+	r.GET("/course/:code", crsHnd.GetCourseByCode)
+	r.GET("/course/:code/categories", crsHnd.GetCatByCode)
+	r.GET("/categories", catHnd.GetCatList)
+	r.GET("/categories/:id", catHnd.GetCatByID)
 
 	port := fmt.Sprintf("localhost:%v", cfg.ServerPort)
 	r.Run(port)

@@ -1,30 +1,36 @@
 package model
 
-type CurriculumCategories struct {
-	ID        uint     `gorm:"primaryKey;autoIncrement"`          // maps to SERIAL PRIMARY KEY
-	Name      string   `gorm:"type:varchar(100);not null;unique"` // maps to VARCHAR(100) NOT NULL UNIQUE
-	CreditReq int      `gorm:"not null"`                          // maps to INT NOT NULL
-	Courses   []Courses `gorm:"many2many:curriculum_courses;constraint:OnDelete:CASCADE"`
+type CurriculumCategory struct {
+	CatID     uint     `gorm:"column:cat_id;primaryKey" json:"cat_id"`
+	Name      string   `gorm:"column:name" json:"name"`
+	CreditReq int      `gorm:"column:credit_req" json:"credit_required"`
+	Courses   []Course `gorm:"many2many:curriculum_courses;joinForeignKey:CurriculumCatID;joinReferences:CourseCode" json:"-"`
 }
 
-type Courses struct {
-	Code              string               `gorm:"primaryKey;type:varchar(20)"` // maps to VARCHAR(20) PRIMARY KEY :contentReference[oaicite:2]{index=2}
-	Name              string               `gorm:"type:varchar(255);not null"`  // maps to VARCHAR(255) NOT NULL
-	Credits           int                  `gorm:"not null"`                    // maps to INT NOT NULL
-	YearOffered       int                  `gorm:"not null"`                    // maps to INT NOT NULL
-	CourseType        string               `gorm:"type:varchar(100);not null"`  // maps to VARCHAR(100) NOT NULL
-	Description       string               `gorm:"type:text"`                   // maps to TEXT (nullable)
-	Categories        []CurriculumCategories `gorm:"many2many:curriculum_courses;constraint:OnDelete:CASCADE"`
-	Prerequisites     []Courses             `gorm:"many2many:prerequisites;joinForeignKey:CourseCode;joinReferences:PreCourseCode;constraint:OnDelete:CASCADE"`
-	IsPrerequisiteFor []Courses             `gorm:"many2many:prerequisites;joinForeignKey:PreCourseCode;joinReferences:CourseCode;constraint:OnDelete:CASCADE"`
+type Course struct {
+	CourseCode    string               `gorm:"column:course_code;primaryKey" json:"course_code"`
+	CourseName    string               `gorm:"column:course_name" json:"course_name"`
+	Credits       int                  `gorm:"column:credits" json:"credits"`
+	YearOffered   int                  `gorm:"column:year_offered" json:"year_offered"`
+	CourseType    string               `gorm:"column:course_type" json:"course_type"`
+	Description   string               `gorm:"column:description" json:"description"`
+	Categories    []CurriculumCategory `gorm:"many2many:curriculum_courses;joinForeignKey:CourseCode;joinReferences:CurriculumCatID" json:"categories"`
+	Prerequisites []Prerequisite       `gorm:"foreignKey:CourseCode;references:CourseCode" json:"prerequisites"`
 }
 
-type CurriculumCourses struct {
-	CurriculumCatID uint   `gorm:"column:curriculum_cat_id;primaryKey;"`           // fk → CurriculumCategory(ID) :contentReference[oaicite:5]{index=5}
-	CourseCode      string `gorm:"column:course_code;type:varchar(20);primaryKey"` // fk → Course(Code)
+type Prerequisite struct {
+	CourseCode    string `gorm:"column:course_code;primaryKey"`
+	PreCourseCode string `gorm:"column:pre_course_code;primaryKey" json:"pre_course_code"`
 }
 
-type Prerequisites struct {
-	CourseCode    string `gorm:"column:course_code;type:varchar(20);primaryKey"`     // fk → Course(Code)
-	PreCourseCode string `gorm:"column:pre_course_code;type:varchar(20);primaryKey"` // fk → Course(Code)
+func (CurriculumCategory) TableName() string {
+	return "curriculum_categories"
+}
+
+func (Course) TableName() string {
+	return "courses"
+}
+
+func (Prerequisite) TableName() string {
+	return "prerequisites"
 }
