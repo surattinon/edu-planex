@@ -1,4 +1,0 @@
-[build]
-  cmd = "go build -o ./tmp/server ./cmd/server"
-  bin = "tmp/server"
-  include_ext = ["go","tpl","tmpl","html"]

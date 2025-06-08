@@ -5,30 +5,38 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-
-	"github.com/surattinon/edu-planex/backend/config"
+	"github.com/surattinon/edu-planex/backend/internal/config"
 	"github.com/surattinon/edu-planex/backend/internal/database"
-	"github.com/surattinon/edu-planex/backend/internal/handler"
 	"github.com/surattinon/edu-planex/backend/internal/logger"
-	"github.com/surattinon/edu-planex/backend/internal/middleware"
-	"github.com/surattinon/edu-planex/backend/internal/repository"
-	"github.com/surattinon/edu-planex/backend/internal/service"
+	"github.com/surattinon/edu-planex/backend/internal/seeds"
 )
 
 func run() {
-	// Load Config
-	cfg := config.Load()
+	cfg, dsn := config.Load()
+	logger.Init(true)
 
-	// Init Logger
-	debugMode := cfg.Debug
-	logger.Init(debugMode)
+	log.Logger.Debug().Msgf("Server Port: %v", cfg.ServerPort)
+	log.Logger.Debug().Msgf("DB Host: %v", cfg.DB_Host)
+	log.Logger.Debug().Msgf("DB User: %v", cfg.DB_User)
+	log.Logger.Debug().Msgf("DB Pass: %v", cfg.DB_Pass)
+	log.Logger.Debug().Msgf("DB Name: %v", cfg.DB_Name)
+	log.Logger.Debug().Msgf("DB Port: %v", cfg.DB_Port)
+	log.Logger.Debug().Msgf("DB SSL Mode: %v", cfg.DB_SSLMode)
+	log.Logger.Debug().Msgf("DB DSN: %v", dsn)
 
-	log.Info().Msg("Server starting...")
+	db, err := database.Connect(dsn)
+	if err != nil {
+		log.Logger.Error().Msgf("%v", err)
+		return
+	}
 
-	// DB connection and migration
-	dbUrl := cfg.DB_Url
-	dbDSN := cfg.DB_Dsn
+	if err := seeds.Load(db, "./internal/seeds/seeds-json/bsc-it-21.json"); err != nil {
+		log.Logger.Error().Msgf("%v", err)
+	}
+	r := gin.Default()
+	// r.GET("/courses", handler.GetCourses)
+	// r.GET("/course/:code", handler.GetCourseByID)
 
-	log.Printf("DB URL is: %s", dbUrl)
-	log.Printf("DB DSN is: %s", dbDSN)
+	port := fmt.Sprintf("localhost:%v", cfg.ServerPort)
+	r.Run(port)
 }
