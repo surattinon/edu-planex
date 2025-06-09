@@ -14,7 +14,7 @@ import (
 
 func run() {
 	cfg, dsn := config.Load()
-	logger.Init(true)
+	logger.Init(false)
 
 	log.Logger.Debug().Msgf("Server Port: %v", cfg.ServerPort)
 	log.Logger.Debug().Msgf("DB Host: %v", cfg.DB_Host)
