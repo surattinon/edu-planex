@@ -24,6 +24,16 @@ func (h *CourseHandler) GetCourseList(c *gin.Context) {
 	c.JSON(http.StatusOK, cs)
 }
 
+
+func (h *CourseHandler) CourseTable(c *gin.Context) {
+	cs, err := h.svc.ListSummariesWithPrereqs()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, cs)
+}
+
 func (h *CourseHandler) GetCourseByCode(c *gin.Context) {
 	code := c.Param("code")
 	course, err := h.svc.FindCourseByCode(code)

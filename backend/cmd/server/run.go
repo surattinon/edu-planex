@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"github.com/surattinon/edu-planex/backend/internal/config"
@@ -13,9 +11,11 @@ import (
 )
 
 func run() {
+	// Load Config
 	cfg, dsn := config.Load()
-	logger.Init(false)
 
+	// Init Logger
+	logger.Init(false)
 	log.Logger.Debug().Msgf("Server Port: %v", cfg.ServerPort)
 	log.Logger.Debug().Msgf("DB Host: %v", cfg.DB_Host)
 	log.Logger.Debug().Msgf("DB User: %v", cfg.DB_User)
@@ -25,24 +25,53 @@ func run() {
 	log.Logger.Debug().Msgf("DB SSL Mode: %v", cfg.DB_SSLMode)
 	log.Logger.Debug().Msgf("DB DSN: %v", dsn)
 
+	// Connect to Postgres
 	db, err := database.Connect(dsn)
 	if err != nil {
 		log.Logger.Error().Msgf("%v", err)
 		return
 	}
 
+	// New Services
 	crsSvc := service.NewCourseService(db)
-	crsHnd := handler.NewCourseHandler(crsSvc)
 	catSvc := service.NewCategoryService(db)
-	catHnd := handler.NewCategoryHandler(catSvc)
+	userSvc := service.NewUserService(db)
+	planSvc := service.NewPlanService(db)
+	enrollSvc := service.NewEnrollService(db)
 
+	// New Handlers
+	crsHnd := handler.NewCourseHandler(crsSvc)
+	catHnd := handler.NewCategoryHandler(catSvc)
+	userHnd := handler.NewUserHandler(userSvc)
+	planHnd := handler.NewPlanHandler(planSvc)
+	enrollHnd := handler.NewEnrollHandler(enrollSvc)
+
+	// init API router
 	r := gin.Default()
+
+	// GET
 	r.GET("/courses", crsHnd.GetCourseList)
+	r.GET("/coursetable", crsHnd.CourseTable)
 	r.GET("/course/:code", crsHnd.GetCourseByCode)
 	r.GET("/course/:code/categories", crsHnd.GetCatByCode)
 	r.GET("/categories", catHnd.GetCatList)
 	r.GET("/categories/:id", catHnd.GetCatByID)
+	r.GET("/profile", userHnd.GetProfile)
+	r.GET("/plans", planHnd.GetPlanList)
+	r.GET("/plan/:id", planHnd.GetPlanByID)
+	r.GET("/plantable/:id", planHnd.PlanTable)
+	r.GET("/plantable", planHnd.AllPlanTable)
+	r.GET("/enrollments", enrollHnd.GetEnrollList)
+	r.GET("/enrollhistory", enrollHnd.GetEnrollBySemester)
+	r.GET("/enrollyear", enrollHnd.GetEnrollByYear)
 
-	port := fmt.Sprintf("localhost:%v", cfg.ServerPort)
-	r.Run(port)
+	// POST
+	r.POST("/plan/:id/apply", planHnd.Apply)
+	r.POST("/plans", planHnd.Create)
+
+	// PUT
+	r.PUT("/profile", userHnd.UpdateProfile)
+
+	// Serve
+	r.Run(":" + cfg.ServerPort)
 }

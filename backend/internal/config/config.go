@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	ServerPort int    `env:"SERVER_PORT" envDefault:"8888"`
+	ServerPort string    `env:"SERVER_PORT" envDefault:"8888"`
 	DB_Host    string `env:"DB_HOST" envDefault:"localhost"`
 	DB_User    string `env:"DB_USER" envDefault:"postgres"`
 	DB_Pass    string `env:"DB_PASS" envDefault:"eduplanex442"`
