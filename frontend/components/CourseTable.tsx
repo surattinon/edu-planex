@@ -33,10 +33,10 @@ export function CourseTable<TData, TValue>({
 
   return (
     <div className="h-full border rounded-md">
-      <Table className="table-auto rounded-md">
-        <TableHeader className="bg-card">
+      <Table className="table-fixed rounded-md">
+        <TableHeader className="bg-card px-6">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>

@@ -4,8 +4,8 @@ import { PlanList } from './planlist';
 
 export default function Page() {
   return (
-    <div className="h-fit min-h-screen pt-10 ml-15 mr-10">
-      <div className='py-6 flex justify-around'>
+    <div className="h-fit min-h-screen pt-10 mx-36 mr-10">
+      <div className='px-52 py-10 flex justify-between'>
         <h1 className="text-4xl mb-6">Course Planner</h1>
         <div className=''>
           <Planner />

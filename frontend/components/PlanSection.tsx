@@ -44,8 +44,8 @@ export function PlanSection({
 
   return (
     <>
-      <section className="p-4 bg-gradient-to-b from-primary/2 to-card text-card-foreground rounded-md border space-y-4">
-        <h3 className="text-2xl font-bold">{plan.plan_name}</h3>
+      <section className={`p-4 rounded-md space-y-4 ${applied ? 'border-none text-card-foreground/40 bg-card' : 'border-1 border-white/30 text-card-foreground bg-gradient-to-b from-primary/2 to-card shadow-[0_0px_30px_rgba(255,_255,_255,_0.1)]'}`}>
+        <h3 className="text-2xl font-bold">Plan Name : {plan.plan_name}</h3>
         <CourseTable columns={columns} data={plan.courses} />
 
         <Dialog open={open} onOpenChange={setOpen}>

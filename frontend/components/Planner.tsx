@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { fetchAllCourses, fetchEnrollments, savePlanDraft, applyPlan } from '@/lib/api';
@@ -34,6 +35,7 @@ export function Planner() {
   const years = Array.from({ length: 2026 - 2021 + 1 }, (_, i) => 2021 + i);
   const [year, setYear] = useState(new Date().getFullYear());
   const [semester, setSemester] = useState(1);
+  const [planName, setPlanName] = useState("")
 
   const creditSum = Array.from(selected).reduce((sum, code) => {
     const crs = courses.find(c => c.course_code === code);
@@ -41,7 +43,7 @@ export function Planner() {
   }, 0);
 
   const handleSaveDraft = async () => {
-    await savePlanDraft({ name: `${semester}/${year}`, course_codes: Array.from(selected) });
+    await savePlanDraft({ name: `${planName}`, course_codes: Array.from(selected) });
     setOpen(false);
   };
 
@@ -72,10 +74,14 @@ export function Planner() {
             })}
           </div>
           <div className="col-span-1 space-y-4">
-            <div><label className="block text-sm">Year</label><Select value={String(year)} onValueChange={v => setYear(Number(v))}><SelectTrigger className="w-full"><SelectValue placeholder="Select year" /></SelectTrigger><SelectContent>{years.map(y => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent></Select></div>
-            <div><label className="block text-sm">Semester</label><Select value={String(semester)} onValueChange={v => setSemester(Number(v))}><SelectTrigger className="w-full"><SelectValue placeholder="Select semester" /></SelectTrigger><SelectContent>{[1, 2, 3].map(s => <SelectItem key={s} value={String(s)}>{s}</SelectItem>)}</SelectContent></Select></div>
+            <div>
+              <label className="block text-3xl mb-3">Plan Name</label>
+              <Input id='planname' value={planName} onChange={e => setPlanName(e.target.value)} />
+            </div>
+            {/* <div><label className="block text-sm">Year</label><Select value={String(year)} onValueChange={v => setYear(Number(v))}><SelectTrigger className="w-full"><SelectValue placeholder="Select year" /></SelectTrigger><SelectContent>{years.map(y => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent></Select></div> */}
+            {/* <div><label className="block text-sm">Semester</label><Select value={String(semester)} onValueChange={v => setSemester(Number(v))}><SelectTrigger className="w-full"><SelectValue placeholder="Select semester" /></SelectTrigger><SelectContent>{[1, 2, 3].map(s => <SelectItem key={s} value={String(s)}>{s}</SelectItem>)}</SelectContent></Select></div> */}
             <div className="text-lg">Selected <strong>{selected.size}/5</strong><br />Total Credits: <strong>{creditSum}</strong></div>
-            <div className="flex justify-end space-x-2"><Button variant="outline" onClick={handleSaveDraft}>Save Draft</Button><Button onClick={handleApply} disabled={selected.size === 0}>Apply</Button></div>
+            <div className="flex justify-end space-x-2"><Button variant="outline" onClick={handleSaveDraft} disabled={selected.size === 0}>Save Draft</Button></div>
           </div>
         </div>
       </DialogContent>
