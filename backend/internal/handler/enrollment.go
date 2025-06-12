@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/surattinon/edu-planex/backend/internal/service"
@@ -80,4 +81,21 @@ func (h *PlanHandler) Create(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, plan)
+}
+
+func (h *PlanHandler) Delete(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid plan ID"})
+		return
+	}
+	if err := h.svc.DeletePlan(uint(id)); err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	c.Status(http.StatusNoContent)
 }

@@ -65,3 +65,15 @@ export async function applyPlan(planId: number, year: number, semester_no: numbe
   });
   if (!res.ok) throw new Error('Failed to apply plan');
 }
+
+
+export async function deletePlan(planId: number) {
+  const res = await fetch(`${API_BASE}/plan/${planId}`, {
+    method: 'DELETE'
+  });
+  if (res.status === 204) {
+  } else {
+    const err = await res.json();
+    console.error('Delete failed', err);
+  }
+}

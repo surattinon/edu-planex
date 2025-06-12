@@ -23,6 +23,7 @@ export function PlanList() {
       .finally(() => setLoading(false))
   }, [])
 
+
   // table columns
   const columns: ColumnDef<Plan['courses'][number], any>[] = [
     { accessorKey: 'course_code', header: 'Course Code' },

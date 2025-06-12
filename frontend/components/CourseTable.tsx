@@ -33,7 +33,7 @@ export function CourseTable<TData, TValue>({
 
   return (
     <div className="h-full border rounded-md">
-      <Table className="table-fixed rounded-md">
+      <Table className="table-auto rounded-md">
         <TableHeader className="bg-card px-6">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="">

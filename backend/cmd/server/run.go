@@ -69,6 +69,9 @@ func run() {
 	r.POST("/plan/:id/apply", planHnd.Apply)
 	r.POST("/plans", planHnd.Create)
 
+	// DELETE
+	r.DELETE("/plan/:id", planHnd.Delete)
+
 	// PUT
 	r.PUT("/profile", userHnd.UpdateProfile)
 

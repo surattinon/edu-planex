@@ -1,8 +1,6 @@
 package service
 
 import (
-	"errors"
-
 	"github.com/surattinon/edu-planex/backend/internal/model"
 	"gorm.io/gorm"
 )
@@ -38,7 +36,6 @@ func (s *EnrollService) ListBySemester(year, semNo int) ([]model.Enrollment, err
 	return list, err
 }
 
-
 func (s *EnrollService) ListByYear(year int) ([]model.Enrollment, error) {
 	var list []model.Enrollment
 	err := s.db.
@@ -51,50 +48,6 @@ func (s *EnrollService) ListByYear(year int) ([]model.Enrollment, error) {
 	return list, err
 }
 
-func (s *PlanService) CreatePlan(userID uint, name string, codes []string) (*model.Plan, error) {
-	if len(codes) == 0 {
-		return nil, errors.New("must specify at least one course")
-	}
-
-	// wrap in a transaction for atomicity
-	tx := s.db.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-
-	// Plan header, link to user info
-	plan := model.Plan{
-		UserID: userID,
-		Name:   name,
-	}
-	if err := tx.Create(&plan).Error; err != nil {
-		tx.Rollback()
-		return nil, err
-	}
-
-	// Create each plan_course link
-	links := make([]model.PlanCourse, 0, len(codes))
-	for _, code := range codes {
-		links = append(links, model.PlanCourse{
-			PlanID:     plan.PlanID,
-			CourseCode: code,
-		})
-	}
-	if err := tx.Create(&links).Error; err != nil {
-		tx.Rollback()
-		return nil, err
-	}
-
-	// Preload the courses and return created plan
-	if err := tx.
-		Preload("Courses").
-		First(&plan, plan.PlanID).Error; err != nil {
-		tx.Rollback()
-		return nil, err
-	}
-
-	tx.Commit()
-	return &plan, nil
-}
+// func (s *EnrollService) GetCredsByID(id int) (*dto.CreditResult, error) {
+// 	var creds dto.CreditResult
+// }
