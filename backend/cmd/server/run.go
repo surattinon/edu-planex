@@ -39,6 +39,7 @@ func run() {
 	planSvc := service.NewPlanService(db)
 	enrollSvc := service.NewEnrollService(db)
 	progSvc := service.NewProgressService(db)
+	curSvc := service.NewCurriculumService(db)
 
 	// New Handlers
 	crsHnd := handler.NewCourseHandler(crsSvc)
@@ -47,6 +48,7 @@ func run() {
 	planHnd := handler.NewPlanHandler(planSvc)
 	enrollHnd := handler.NewEnrollHandler(enrollSvc)
 	progHnd := handler.NewProgressHandler(progSvc)
+	curHnd := handler.NewCurriculumHandler(curSvc)
 
 	// init API router
 	r := gin.Default()
@@ -83,6 +85,8 @@ func run() {
 		v1.GET("/progress", progHnd.GetProgress)
 		v1.GET("/enrollhist", enrollHnd.EnrollHistoryList)
 		v1.GET("/plantable", planHnd.AllPlanTable)
+		v1.GET("/curriculum", crsHnd.GetCourseList)
+		v1.GET("/curriculumtable", curHnd.List)
 
 		v1.POST("/plan/:id/apply", planHnd.Apply)
 		v1.POST("/plans", planHnd.Create)

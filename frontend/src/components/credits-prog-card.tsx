@@ -38,7 +38,7 @@ export const CredProgCard = () => {
   return (
     <Card className="p-5 h-full w-full flex flex-col bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl rounded-md border">
       <CardHeader className="mt-5">
-        <CardTitle className="text-3xl font-light">Overall Credits</CardTitle>
+        <CardTitle className="text-3xl font-light text-center">Overall Credits</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
         <div className="flex flex-col gap-2">

@@ -41,3 +41,53 @@ export interface Enrollment {
   }
   courses: Course[]
 }
+
+export interface Category {
+  cat_id: number,
+  name: string,
+  credits: number
+}
+
+export interface Prerequisite {
+  course_code: string;
+  pre_course_code: string;
+}
+
+export interface CurriculumCourse {
+  course_code: string;
+  course_name: string;
+  credits: number;
+  year_offered: number;
+  course_type: string;
+  description: string;
+  categories: Category[];
+  prerequisites: Prerequisite[];
+}
+
+
+export interface Courses {
+  code: string;
+  name: string;
+  desc: string;
+  credits: number;
+  prerequisites: string[];
+}
+
+export interface CourseTypes {
+  id: number;
+  name: string;
+  courses: Courses[];
+}
+
+export interface Categories {
+  id: number;
+  name: string;
+  credit_required: number;
+  course_types: CourseTypes[];
+}
+
+export interface Curriculum {
+  id: number;
+  name: string;
+  categories: Categories[];
+}
