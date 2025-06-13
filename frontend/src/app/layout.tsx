@@ -41,7 +41,7 @@ export default function RootLayout({
           <SidebarProvider defaultOpen={true}>
             <div className="flex h-screen w-screen">
               <AppSidebar />
-              <main className="md:my-2 md:mr-2 flex-1 bg-gray-200 dark:bg-gradient-to-b from-zinc-950 to-slate-950 border-none md:border-1 md:border-zinc-300 md:rounded-lg overflow-auto">
+              <main className="md:my-2 md:mr-2 flex-1 bg-gray-200 dark:bg-gradient-to-b from-zinc-950 to-slate-950 border md:border md:border-zinc-600 md:rounded-lg overflow-auto">
                 <SidebarTrigger className="m-3 bg-transparent fixed" />
                 <div className="h-fit w-full lg:h-full  p-5 md:p-15">
                   {children}

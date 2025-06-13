@@ -9,10 +9,10 @@ export default function Dashboard() {
       <div className="h-full flex flex-col gap-3">
         <h1 className="text-4xl mb-3 font-light">Dashboard</h1>
         <div className="w-full h-full flex flex-col md:flex-row gap-3 ">
-          <div className="h-full w-full md:w-2/3 ">
+          <div className="h-full w-full md:w-3/4 ">
             <ProfileCard />
           </div>
-          <div className="h-full w-full md:w-1/3 ">
+          <div className="h-full w-full md:w-1/4 ">
             <CredProgCard />
           </div>
         </div>

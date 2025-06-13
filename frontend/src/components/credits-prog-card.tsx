@@ -44,7 +44,7 @@ export const CredProgCard = () => {
         <div className="flex flex-col gap-2">
           <CircularProgress
             classNames={{
-              svg: "w-64 h-64 drop-shadow-md",
+              svg: "w-58 h-58 drop-shadow-md",
               indicator: "stroke-green-400 stroke-2",
               track: "stroke-white/10 stroke-2",
               value: "text-4xl font-light text-white",
@@ -54,7 +54,7 @@ export const CredProgCard = () => {
             value={overallPercent}
           />
         </div>
-        {/* <h1 className='w-full text-4xl font-light my-3 text-center'>{totalEarned} <span className='text-xl text-zinc-400'> / {totalRequired} credits</span></h1> */}
+        <h1 className='w-full text-4xl font-light my-3 text-center'>{totalEarned} <span className='text-xl text-zinc-400'> / {totalRequired} credits</span></h1>
       </CardContent>
     </Card>
   )

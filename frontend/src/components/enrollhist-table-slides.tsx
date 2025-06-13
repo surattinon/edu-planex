@@ -69,7 +69,7 @@ export function EnrollHistSlide() {
     <Card className="p-7 h-full w-full flex flex-col bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl rounded-md border">
       <CardHeader className="flex items-center justify-between">
         <CardTitle className="text-3xl font-light">
-          Enrollment History <span className="text-lg text-zinc-300">Semester {number}/{year}</span>
+          Enrollment History <span className="ml-3 text-lg text-zinc-300">Semester {number}/{year}</span>
         </CardTitle>
 
         <div className="space-x-2">
@@ -93,8 +93,8 @@ export function EnrollHistSlide() {
       </CardHeader>
 
       <CardContent className="mt-14">
-        <div className="rounded-md border bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl">
-          <Table className="">
+        <div className="rounded-md border bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.1)]">
+          <Table className="rounded-md">
             <TableHeader className="">
               <TableRow>
                 <TableHead>Course Code</TableHead>
