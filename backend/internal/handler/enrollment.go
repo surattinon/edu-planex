@@ -99,3 +99,14 @@ func (h *PlanHandler) Delete(c *gin.Context) {
 	}
 	c.Status(http.StatusNoContent)
 }
+
+func (h *EnrollHandler) EnrollHistoryList(c *gin.Context) {
+	uid := 1
+	// call service
+	history, err := h.svc.GetHistory(uint(uid))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, history)
+}

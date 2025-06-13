@@ -38,6 +38,7 @@ func run() {
 	userSvc := service.NewUserService(db)
 	planSvc := service.NewPlanService(db)
 	enrollSvc := service.NewEnrollService(db)
+	progSvc := service.NewProgressService(db)
 
 	// New Handlers
 	crsHnd := handler.NewCourseHandler(crsSvc)
@@ -45,6 +46,7 @@ func run() {
 	userHnd := handler.NewUserHandler(userSvc)
 	planHnd := handler.NewPlanHandler(planSvc)
 	enrollHnd := handler.NewEnrollHandler(enrollSvc)
+	progHnd := handler.NewProgressHandler(progSvc)
 
 	// init API router
 	r := gin.Default()
@@ -64,6 +66,7 @@ func run() {
 	r.GET("/enrollments", enrollHnd.GetEnrollList)
 	r.GET("/enrollhistory", enrollHnd.GetEnrollBySemester)
 	r.GET("/enrollyear", enrollHnd.GetEnrollByYear)
+	r.GET("/progress", progHnd.GetProgress)
 
 	// POST
 	r.POST("/plan/:id/apply", planHnd.Apply)
@@ -74,6 +77,20 @@ func run() {
 
 	// PUT
 	r.PUT("/profile", userHnd.UpdateProfile)
+
+	v1 := r.Group("api/v1")
+	{
+		v1.GET("/progress", progHnd.GetProgress)
+		v1.GET("/enrollhist", enrollHnd.EnrollHistoryList)
+		v1.GET("/plantable", planHnd.AllPlanTable)
+
+		v1.POST("/plan/:id/apply", planHnd.Apply)
+		v1.POST("/plans", planHnd.Create)
+
+		v1.PUT("/profile", userHnd.UpdateProfile)
+
+		v1.DELETE("/plan/:id", planHnd.Delete)
+	}
 
 	// Serve
 	r.Run(":" + cfg.ServerPort)
