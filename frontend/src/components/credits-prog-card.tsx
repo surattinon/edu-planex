@@ -36,25 +36,25 @@ export const CredProgCard = () => {
   const overallPercent = Math.round((totalEarned / totalRequired) * 100)
 
   return (
-    <Card className="p-5 h-full w-full flex flex-col bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl rounded-md border">
-      <CardHeader className="mt-5">
+    <Card className="h-full w-full flex flex-col bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl rounded-md border">
+      <CardHeader className="mt-3">
         <CardTitle className="text-3xl font-light text-center">Overall Credits</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
         <div className="flex flex-col gap-2">
           <CircularProgress
             classNames={{
-              svg: "w-58 h-58 drop-shadow-md",
-              indicator: "stroke-green-400 stroke-2",
+              svg: "w-52 h-52 drop-shadow-md",
+              indicator: "stroke-green-300 stroke-2",
               track: "stroke-white/10 stroke-2",
-              value: "text-4xl font-light text-white",
+              value: "text-3xl font-light text-white",
             }}
             showValueLabel={true}
             strokeWidth={4}
             value={overallPercent}
           />
         </div>
-        <h1 className='w-full text-4xl font-light my-3 text-center'>{totalEarned} <span className='text-xl text-zinc-400'> / {totalRequired} credits</span></h1>
+        <h1 className='w-full text-3xl font-normal my-3 text-center'>{totalEarned} <span className='text-lg text-zinc-400'> / {totalRequired} credits</span></h1>
       </CardContent>
     </Card>
   )

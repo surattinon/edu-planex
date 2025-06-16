@@ -108,13 +108,13 @@ export function PlanList() {
   };
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       {/* Draft Plans */}
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Draft Plans</h2>
+        <h2 className="text-2xl font-semibold mb-4">My Plans</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {drafts.map((plan) => (
-            <Card key={plan.plan_id} className="border">
+            <Card key={plan.plan_id} className="border shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.05)]">
               <CardHeader>
                 <CardTitle>{plan.name}</CardTitle>
               </CardHeader>
@@ -157,15 +157,15 @@ export function PlanList() {
             </Card>
           ))}
           {drafts.length === 0 && (
-            <p className="col-span-full text-center text-muted-foreground">
-              No draft plans.
-            </p>
+              <p className="col-span-full text-center text-muted-foreground">
+                No plans.
+              </p>
           )}
         </div>
       </section >
 
       {/* Applied Plans */}
-      < section >
+      < section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">Applied Plans</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {applied.map((plan) => (
@@ -211,10 +211,10 @@ export function PlanList() {
         (planId !== null && isApplyPop) && (
           <>
             <div
-              className="fixed inset-0 bg-black/50 z-40"
+              className="fixed inset-0 bg-black/10 backdrop-blur-xs z-40 h-full"
               onClick={closeApplyPopup}
             />
-            <Card className="fixed h-fit inset-0 m-auto w-80 p-4 z-50">
+            <Card className="fixed h-fit inset-0 m-auto w-80 p-4 z-50 drop-shadow-2xl drop-shadow-zinc-950">
               <CardHeader>
                 <CardTitle>Apply Plan</CardTitle>
               </CardHeader>
@@ -252,7 +252,7 @@ export function PlanList() {
         )
       }
       {
-        ( planId !== null && isDeletePop ) && (
+        (planId !== null && isDeletePop) && (
           <>
             <div
               className="fixed inset-0 bg-black/50 z-40"

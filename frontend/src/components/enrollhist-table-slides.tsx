@@ -93,7 +93,7 @@ export function EnrollHistSlide() {
       </CardHeader>
 
       <CardContent className="mt-14">
-        <div className="rounded-md border bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl shadow-[0_0_100px_1px_rgba(255,_255,_255,_0.1)]">
+        <div className="rounded-md border bg-gradient-to-b from-zinc-950/60 to-card/60 backdrop-blur-xl ">
           <Table className="rounded-md">
             <TableHeader className="">
               <TableRow>

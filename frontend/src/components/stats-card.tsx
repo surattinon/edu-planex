@@ -30,7 +30,7 @@ export const StatsCard = () => {
     setDisplayPercents(Array(data.courses.length).fill(0));
     const id = setTimeout(() => {
       setDisplayPercents(target);
-    }, 200);
+    }, 500);
 
     return () => clearTimeout(id);
   }, [data]);
@@ -77,7 +77,7 @@ export const StatsCard = () => {
                 <h1 className='capitalize'>{course.key.replace('_', ' ')}</h1>
                 <h1 className="text-md text-zinc-300">{realPercent}%</h1>
               </div>
-              <Progress value={display} indicatorColor={gradient} className='h-1' />
+              <Progress value={display} indicatorColor={gradient} className='h-[5px]' />
               <h1 className="self-end text-md text-white">{course.earned}<span className='text-sm text-zinc-400'> / {course.required} credits</span> </h1>
             </div>
           )

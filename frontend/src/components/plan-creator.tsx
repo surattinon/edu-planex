@@ -3,6 +3,8 @@
 import React, { useState, useMemo } from "react";
 import useSWR, { mutate } from "swr";
 import { axiosInstance, fetcher } from "@/lib/api";
+import { LazyMotion, domAnimation } from "motion/react"
+import * as m from "motion/react-m"
 
 // Shadcn UI components
 import { Button } from "@/components/ui/button";
@@ -98,7 +100,9 @@ export function PlanCreator() {
 
       {open && (
         // Overlay background
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40" onClick={() => setOpen(false)} />
+        <LazyMotion features={domAnimation}>
+          <m.div animate={`bg-black`} className="fixed inset-0 bg-black/0 backdrop-blur-xs z-40" onClick={() => setOpen(false)} />
+        </LazyMotion>
 
       )}
 

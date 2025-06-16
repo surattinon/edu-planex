@@ -40,9 +40,9 @@ const sidebarItems = [
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="sidebar" className="border-none">
-      <SidebarHeader>
-        <SidebarMenu>
-          <div className="w-4 h-2 bg-black dark:bg-white ml-2 mt-3 rounded-full" />
+      <SidebarHeader className="my-3">
+        <SidebarMenu className="w-full flex flex-col justify-center items-start">
+          <div className="w-6 h-2 bg-black dark:bg-white dark:shadow-[0_0_10px_1px_rgba(255,_255,_255,_0.5)] ml-1 mt-3 rounded-full" />
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
@@ -67,7 +67,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem className="mb-1">
+          <SidebarMenuItem className="mb-2">
             <ThemeToggle />
           </SidebarMenuItem>
         </SidebarMenu>
