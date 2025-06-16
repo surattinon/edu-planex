@@ -78,3 +78,15 @@ func (h *PlanHandler) Apply(c *gin.Context) {
 	}
 	c.JSON(201, enroll)
 }
+
+/////
+
+func (h *PlanHandler) List(c *gin.Context) {
+  userID := uint(1)
+  plans, err := h.svc.ListPlansWithApply(userID)
+  if err != nil {
+    c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    return
+  }
+  c.JSON(http.StatusOK, plans)
+}

@@ -87,6 +87,8 @@ func run() {
 		v1.GET("/plantable", planHnd.AllPlanTable)
 		v1.GET("/curriculum", crsHnd.GetCourseList)
 		v1.GET("/curriculumtable", curHnd.List)
+		v1.GET("/planlist", planHnd.List)
+		v1.GET("personal-cur", curHnd.Personal)
 
 		v1.POST("/plan/:id/apply", planHnd.Apply)
 		v1.POST("/plans", planHnd.Create)

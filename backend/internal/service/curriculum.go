@@ -84,3 +84,83 @@ func (s *CurriculumService) GetCurriculum() ([]dto.CurriculumDTO, error) {
 	out = append(out, cur)
 	return out, nil
 }
+
+func (s *CurriculumService) GetPersonalCurriculum(userID uint) (*dto.PersonalCurriculumDTO, error) {
+	// 1) Load all curriculum categories and their courses
+	var cats []model.CurriculumCategory
+	if err := s.db.
+		Preload("Courses", func(db *gorm.DB) *gorm.DB {
+			// only need course_code, course_name, credits, course_type
+			return db.Select("course_code", "course_name", "credits", "course_type")
+		}).
+		Find(&cats).Error; err != nil {
+		return nil, err
+	}
+
+	// 2) Load all of the user’s enrolled courses (distinct codes)
+	var enrolls []model.Enrollment
+	if err := s.db.
+		Where("user_id = ?", userID).
+		Preload("Courses", func(db *gorm.DB) *gorm.DB {
+			return db.Select("course_code")
+		}).
+		Find(&enrolls).Error; err != nil {
+		return nil, err
+	}
+	enrolledSet := make(map[string]struct{})
+	for _, e := range enrolls {
+		for _, c := range e.Courses {
+			enrolledSet[c.CourseCode] = struct{}{}
+		}
+	}
+
+	// 3) Build the DTO
+	out := &dto.PersonalCurriculumDTO{
+		UserID:     userID,
+		Categories: make([]dto.PCategoryDTO, len(cats)),
+	}
+
+	for i, cat := range cats {
+		catDTO := dto.PCategoryDTO{
+			ID:          int(cat.CatID),
+			Name:        cat.Name,
+			CourseTypes: nil,
+		}
+
+		// group courses by course_type:
+		byType := map[string][]model.Course{}
+		for _, crs := range cat.Courses {
+			byType[crs.CourseType] = append(byType[crs.CourseType], crs)
+		}
+
+		// sort keys for stable output:
+		keys := make([]string, 0, len(byType))
+		for t := range byType {
+			keys = append(keys, t)
+		}
+		sort.Strings(keys)
+
+		// for each course_type build a CourseTypeDTO
+		for idx, tname := range keys {
+			courses := byType[tname]
+			ct := dto.PCourseTypeDTO{
+				ID:      idx,
+				Name:    tname,
+				Courses: make([]dto.PCourseDTO, len(courses)),
+			}
+			for j, c := range courses {
+				_, isEnrolled := enrolledSet[c.CourseCode]
+				ct.Courses[j] = dto.PCourseDTO{
+					Code:       c.CourseCode,
+					Credits:    c.Credits,
+					IsEnrolled: isEnrolled,
+				}
+			}
+			catDTO.CourseTypes = append(catDTO.CourseTypes, ct)
+		}
+
+		out.Categories[i] = catDTO
+	}
+
+	return out, nil
+}

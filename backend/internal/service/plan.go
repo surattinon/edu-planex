@@ -192,3 +192,63 @@ func (s *PlanService) DeletePlan(id uint) error {
 	}
 	return nil
 }
+
+////////
+
+func (s *PlanService) ListPlansWithApply(userID uint) ([]dto.PlanListDTO, error) {
+  // 1) Load all plans + their courses
+  var plans []model.Plan
+  if err := s.db.
+      Where("user_id = ?", userID).
+      Preload("Courses", func(db *gorm.DB) *gorm.DB {
+        return db.Select("course_code", "course_name", "credits")
+      }).
+      Find(&plans).Error; err != nil {
+    return nil, err
+  }
+
+  // 2) Load ALL enrollments for that user
+  var enrolls []model.Enrollment
+  if err := s.db.
+      Where("user_id = ?", userID).
+      Preload("Courses", func(db *gorm.DB) *gorm.DB {
+        return db.Select("course_code")
+      }).
+      Find(&enrolls).Error; err != nil {
+    return nil, err
+  }
+
+  // 3) Build a set of every course_code the user has ever enrolled
+  enrolled := make(map[string]struct{})
+  for _, e := range enrolls {
+    for _, c := range e.Courses {
+      enrolled[c.CourseCode] = struct{}{}
+    }
+  }
+
+  // 4) Build the DTO list
+  out := make([]dto.PlanListDTO, len(plans))
+  for i, p := range plans {
+    var allEnrolled = true
+    courses := make([]dto.CourseInfo, len(p.Courses))
+    for j, c := range p.Courses {
+      courses[j] = dto.CourseInfo{
+        CourseCode: c.CourseCode,
+        CourseName: c.CourseName,
+        Credits:    c.Credits,
+      }
+      if _, ok := enrolled[c.CourseCode]; !ok {
+        allEnrolled = false
+      }
+    }
+
+    out[i] = dto.PlanListDTO{
+      PlanID:  p.PlanID,
+      Name:    p.Name,
+      UserID:  p.UserID,
+      IsApply: allEnrolled,
+      Courses: courses,
+    }
+  }
+  return out, nil
+}

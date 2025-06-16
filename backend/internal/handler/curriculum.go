@@ -23,3 +23,13 @@ func (h *CurriculumHandler) List(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, cur)
 }
+
+func (h *CurriculumHandler) Personal(c *gin.Context) {
+  uid := uint(1) // or parse from c.Query("user_id") / auth
+  dto, err := h.svc.GetPersonalCurriculum(uid)
+  if err != nil {
+    c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    return
+  }
+  c.JSON(http.StatusOK, dto)
+}

@@ -1,0 +1,57 @@
+[
+  [
+    {
+      "user_id": 1,
+      "categories": [
+        {
+          "id": 1,
+          "name": "General Education Courses",
+          "course_types": [
+            {
+              "id": 0,
+              "name": "General Education",
+              "courses": [
+                {
+                  "code": "ART101",
+                  "is_enrolled": false
+                },
+                {
+                  "code": "ART102",
+                  "is_enrolled": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Professional Courses",
+          "course_types": [
+            {
+              "id": 0,
+              "name": "Basic Core",
+              "courses": [
+                {
+                  "code": "ITE101",
+                  "is_enrolled": false
+                },
+                {
+                  "code": "ITE102",
+                  "is_enrolled": false
+                },
+                {
+                  "code": "ITE103",
+                  "is_enrolled": false
+                },
+                {
+                  "code": "ITE104",
+                  "is_enrolled": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+]

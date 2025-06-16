@@ -1,0 +1,52 @@
+[
+  {
+    "plan_id": 1,
+    "name": "Draft 0001",
+    "user_id": 1,
+    "courses": [
+      {
+        "course_code": "ITE210",
+        "course_name": "Social and Professional Issues in Information Technology",
+        "credits": 4
+      },
+      {
+        "course_code": "ITE442",
+        "course_name": "Database Management Systems II (Pre: ITE441)",
+        "credits": 4
+      },
+      {
+        "course_code": "ITE367",
+        "course_name": "Software Architecture and Modelling (Pre: ITE321)",
+        "credits": 4
+      }
+    ]
+  },
+  {
+    "plan_id": 2,
+    "name": "Draft 0002",
+    "user_id": 1,
+    "is_apply": false,
+    "courses": [
+      {
+        "course_code": "PSY102",
+        "course_name": "Personality Development",
+        "credits": 4
+      },
+      {
+        "course_code": "ENG102",
+        "course_name": "Academic Writing (Pre: ENG101)",
+        "credits": 4
+      },
+      {
+        "course_code": "MAT101",
+        "course_name": "College Algebra I (Pre: MAT100)",
+        "credits": 4
+      },
+      {
+        "course_code": "ITE103",
+        "course_name": "Introduction to Data Structure and Algorithms Analysis",
+        "credits": 4
+      }
+    ]
+  }
+]
