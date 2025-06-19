@@ -1,11 +1,9 @@
--- curriculum_categories
 INSERT INTO curriculum_categories (cat_id, name, credit_req) VALUES
  (1, 'General Education Courses', 40),
  (2, 'Professional Courses', 100),
  (3, 'Free Electives', 8),
  (4, 'Internship', 12);
 
--- courses
 INSERT INTO courses (course_code, course_name, credits, year_offered, course_type, description) VALUES
  ('ART101', 'Art Appreciation', 4, 1, 'General Education', 'Art Appreciation'),
  ('ART102', 'Film Appreciation', 4, 1, 'General Education', 'Film Appreciation'),

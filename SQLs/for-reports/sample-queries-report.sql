@@ -1,20 +1,21 @@
-select
+SELECT
     c.course_code,
     c.course_name,
     c.credits,
     c.year_offered,
     c.course_type,
     c.description
-from courses as c
-;
+FROM
+    courses AS c;
 
+SELECT
+    cc.cat_id,
+    cc.name AS category_name,
+    cc.credit_req
+FROM
+    curriculum_categories AS cc;
 
-select cc.cat_id, cc.name as category_name, cc.credit_req
-from curriculum_categories as cc
-;
-
-
-select
+SELECT
     e.enrollment_id,
     s.year,
     s.semester_number,
@@ -22,27 +23,51 @@ select
     c.course_name,
     c.credits,
     e.created_at
-from enrollments as e
-join semesters as s on e.semester_id = s.semester_id
-join enrollment_courses as ec on e.enrollment_id = ec.enrollment_id
-join courses as c on ec.course_code = c.course_code
-where e.user_id = 1
-order by s.year, s.semester_number
-;
+FROM
+    enrollments AS e
+    JOIN semesters AS s ON e.semester_id = s.semester_id
+    JOIN enrollment_courses AS ec ON e.enrollment_id = ec.enrollment_id
+    JOIN courses AS c ON ec.course_code = c.course_code
+WHERE
+    e.user_id = 1
+ORDER BY
+    s.year,
+    s.semester_number;
+
+SELECT
+    p.plan_id,
+    p.name AS plan_name,
+    pc.course_code,
+    c.course_name,
+    c.credits
+FROM
+    plans AS p
+    JOIN plan_courses AS pc ON p.plan_id = pc.plan_id
+    JOIN courses AS c ON pc.course_code = c.course_code
+WHERE
+    p.user_id = 1
+ORDER BY
+    p.created_at DESC,
+    p.plan_id;
+
+SELECT
+    pr.pre_course_code AS prerequisite_code,
+    c.course_name AS prerequisite_name
+FROM
+    prerequisites AS pr
+    JOIN courses AS c ON pr.pre_course_code = c.course_code
+WHERE
+    pr.course_code = 'ITE102';
+
+UPDATE
+    user_profile
+SET
+    display_name = 'Bas'
+WHERE
+    display_name = 'Surattinon';
 
 
-select p.plan_id, p.name as plan_name, pc.course_code, c.course_name, c.credits
-from plans as p
-join plan_courses as pc on p.plan_id = pc.plan_id
-join courses as c on pc.course_code = c.course_code
-where p.user_id = 1
-order by p.created_at desc, p.plan_id
-;
-
-
-select pr.pre_course_code as prerequisite_code, c.course_name as prerequisite_name
-from prerequisites as pr
-join courses as c on pr.pre_course_code = c.course_code
-where pr.course_code = 'ITE102'
-;
-
+DELETE FROM
+    plan_courses
+WHERE
+    plan_id = 23;
